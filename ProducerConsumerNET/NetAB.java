@@ -15,6 +15,7 @@ public class NetAB implements AB {
 		try {
 			clientSocket = new Socket(host, port);
 			service = new Service(clientSocket);
+			System.out.println("Uspesna konekcija sa serverom!");
 		}  catch (IOException e) {
 			ret = false;
 			System.out.println("Neuspesna konekcija sa serverom!");
@@ -40,6 +41,7 @@ public class NetAB implements AB {
 	@Override
 	public void putGoods(String name, Goods goods) {
 		try {
+			service.send("put");
 			service.send(name);
 			service.send(goods);
 			
@@ -51,6 +53,7 @@ public class NetAB implements AB {
 	public Goods getGoods(String name) {
 		Goods goods = null;
 		try {
+			service.send("get");
 			service.send(name);
 			goods = (Goods)service.receive();
 			

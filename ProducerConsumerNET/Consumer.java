@@ -8,7 +8,7 @@ public class Consumer {
 		AB ab = new NetAB(); 
 		
 		if (!ab.init(host, port))
-			return; // dodati host i port kroz argumente komandne linije
+			return; 
 
 		for (int i = 2; i < args.length; i++) {
 			String name = args[i];
@@ -21,6 +21,8 @@ public class Consumer {
 				Thread.sleep(1000 + (int) (Math.random() * 734));
 			}
 		}
+		
+		System.out.println("Consumer finished");
 		ab.close();
 	}
 }

@@ -10,8 +10,14 @@ public class GoodsImpl implements Goods, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private ArrayList<String> buff = new ArrayList<>();
-	private int cursor = 0;
+	private ArrayList<String> buff;
+	private int cursor;
+	
+	public GoodsImpl(String name) {
+		this.name = name;
+		this.buff = new ArrayList<>();
+		this.cursor = 0;
+	}
 
 	@Override
 	public String getName() {

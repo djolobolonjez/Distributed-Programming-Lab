@@ -35,6 +35,8 @@ public class RequestHandler extends Thread {
 					buffer = data.get(name);
 				}
 				
+				data.put(name, buffer);
+				
 				switch (opr) {
 				case "put":
 					goods = (Goods) service.receive();

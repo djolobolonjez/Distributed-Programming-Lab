@@ -14,7 +14,7 @@ public class Producer {
 		for (int i = 2; i < args.length; i++) {
 			String name = args[i];
 
-			Goods goods = new GoodsImpl();
+			Goods goods = new GoodsImpl(name);
 
 			int size = (int) (Math.random() * 32); 
 			for (int j = 0; j < size; j++) {
@@ -28,6 +28,7 @@ public class Producer {
 			ab.putGoods(name, goods);
 
 		}
+		System.out.println("Producer finished");
 		ab.close();
 	}
 }

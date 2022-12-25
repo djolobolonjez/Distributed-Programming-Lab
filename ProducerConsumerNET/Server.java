@@ -3,13 +3,12 @@ package ProducerConsumerNET;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
 
-	private Map<String, AtomicBroadcast<Goods>> data = new HashMap<>();
+	private Map<String, AtomicBroadcast<Goods>> data = new ConcurrentHashMap<>();
 	private int port;
 	
 	public Server(int port) {
