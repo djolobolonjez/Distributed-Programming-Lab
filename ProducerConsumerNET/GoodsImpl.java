@@ -65,7 +65,7 @@ public class GoodsImpl implements Goods, Serializable {
 
 	@Override
 	public void save(String name) {
-		String path = "C:\\Users\\User\\Desktop\\" + name + ".txt";
+		String path = name + ".txt";
 		File f = new File(path);
 		try {
 			f.createNewFile();

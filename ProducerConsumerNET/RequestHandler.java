@@ -49,8 +49,6 @@ public class RequestHandler extends Thread {
 					
 					break;
 				}
-				
-				data.put(name, buffer);
 			}
 		} catch (Exception e) { }
 		
