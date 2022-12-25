@@ -29,13 +29,9 @@ public class RequestHandler extends Thread {
 				Goods goods = null;
 				
 				AtomicBroadcast<Goods> buffer;
-				if (!data.containsKey(name)) {
-					buffer = new MonitorAtomicBroadcast<>();
-				} else {
+				if ((buffer = data.putIfAbsent(name, new MonitorAtomicBroadcast<>())) == null) {
 					buffer = data.get(name);
 				}
-				
-				data.put(name, buffer);
 				
 				switch (opr) {
 				case "put":

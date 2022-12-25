@@ -14,12 +14,9 @@ public class AtomicBroadcastRemoteImpl<K, V> implements AtomicBroadcastRemote<K,
 	public void put(K name, V goods) {
 		
 		AtomicBroadcast<V> buffer;
-		if (!remoteMap.containsKey(name)) {
-			buffer = new MonitorAtomicBroadcast<>();
-		} else {
+		if ((buffer = remoteMap.putIfAbsent(name, new MonitorAtomicBroadcast<>())) == null) {
 			buffer = remoteMap.get(name);
 		}
-		remoteMap.put(name, buffer);
 		
 		buffer.put(goods);
 	}
@@ -28,13 +25,9 @@ public class AtomicBroadcastRemoteImpl<K, V> implements AtomicBroadcastRemote<K,
 	public V get(K name) {
 		
 		AtomicBroadcast<V> buffer;
-		if (!remoteMap.containsKey(name)) {
-			buffer = new MonitorAtomicBroadcast<>();
-		} else {
+		if ((buffer = remoteMap.putIfAbsent(name, new MonitorAtomicBroadcast<>())) == null) {
 			buffer = remoteMap.get(name);
 		}
-		
-		remoteMap.put(name, buffer);
 	
 		V data = buffer.get();
 		
