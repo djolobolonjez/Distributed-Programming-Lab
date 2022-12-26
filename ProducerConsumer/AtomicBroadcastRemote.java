@@ -3,8 +3,8 @@ package ProducerConsumer;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface AtomicBroadcastRemote<K, V> extends Remote {
+public interface AtomicBroadcastRemote extends Remote {
 
-	void put (K name, V goods) throws RemoteException;
-	V get (K name) throws RemoteException;
+	void put (String name, Goods goods) throws RemoteException;
+	Goods get (String name) throws RemoteException;
 }

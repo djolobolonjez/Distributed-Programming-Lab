@@ -3,35 +3,23 @@ package ProducerConsumer;
 import java.rmi.RemoteException;
 import java.util.Map;
 
-public class AtomicBroadcastRemoteImpl<K, V> implements AtomicBroadcastRemote<K, V> {
+public class AtomicBroadcastRemoteImpl implements AtomicBroadcastRemote {
 
-	private Map<K, AtomicBroadcast<V>> data;
+	private Server server;
 	
-	public AtomicBroadcastRemoteImpl(Map<K, AtomicBroadcast<V>> data) {
-		this.data = data;
+	public AtomicBroadcastRemoteImpl(Server server) {
+		this.server = server;
 	}
 	
 	@Override
-	public void put(K name, V goods) throws RemoteException {
+	public void put(String name, Goods goods) throws RemoteException {
 		
-		AtomicBroadcast<V> buffer;
-		if ((buffer = data.putIfAbsent(name, new MonitorAtomicBroadcast<>())) == null) {
-			buffer = data.get(name);
-		}
-		
-		buffer.put(goods);
-		
+		server.put(name, goods);
 	}
 
 	@Override
-	public V get(K name) throws RemoteException {	
-		AtomicBroadcast<V> buffer;
-		if ((buffer = data.putIfAbsent(name, new MonitorAtomicBroadcast<>())) == null) {
-			buffer = data.get(name);
-		}
-		
-		V goods = buffer.get();
-		return goods;
+	public Goods get(String name) throws RemoteException {	
+		return server.get(name);
 	}
 
 	

@@ -8,29 +8,25 @@ public class RequestHandler extends Thread {
 
 	private Socket socket;
 	private Service service;
-	private Map<String, AtomicBroadcast<Goods>> goodsMap;
+	private Server server;
 	
-	public RequestHandler(Socket socket, Map<String, AtomicBroadcast<Goods>> goodsMap) throws IOException {
+	public RequestHandler(Server server, Socket socket) throws IOException {
 		this.socket = socket;
-		this.goodsMap = goodsMap;
+		this.server = server;
 		service = new Service(this.socket);
 	}
 	
 	public void run() {
 		
-		while (true) {
-			try {
+		try(Socket client = this.socket) {
+			while (true) {
+				
 				String name = (String) service.receive();
 				Goods goods = (Goods) service.receive();
 				
-				AtomicBroadcast<Goods> buffer;
-				if ((buffer = goodsMap.putIfAbsent(name, new MonitorAtomicBroadcast<>())) == null) {
-					buffer = goodsMap.get(name);
-				}
+				server.put(name, goods);
 				
-				buffer.put(goods);
-				
-			} catch (Exception e) { }
-		}
+			}	 
+		}catch (Exception e) {}
 	}
 }

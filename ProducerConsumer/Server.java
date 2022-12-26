@@ -9,12 +9,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Server {
 
 	private Map<String, AtomicBroadcast<Goods>> goodsMap = new ConcurrentHashMap<>();
-	private AtomicBroadcastRemote<String, Goods> remoteMap = new AtomicBroadcastRemoteImpl<>(goodsMap);
+	private AtomicBroadcastRemote remoteMap;
 	
 	private int port;
 	
 	public Server(int port) {
 		this.port = port;
+		this.remoteMap = new AtomicBroadcastRemoteImpl(this);
 	}
 	
 	public void run() {
@@ -23,9 +24,27 @@ public class Server {
 		try (ServerSocket serverSocket = new ServerSocket(port)){
 			while (true) {
 				Socket clientSocket = serverSocket.accept();
-				new RequestHandler(clientSocket, goodsMap).start();
+				new RequestHandler(this, clientSocket).start();
 			}
 		} catch (IOException e) { }
+	}
+	
+	public void put (String name, Goods goods) {
+		AtomicBroadcast<Goods> buffer;
+		if ((buffer = goodsMap.putIfAbsent(name, new MonitorAtomicBroadcast<>())) == null) {
+			buffer = goodsMap.get(name);
+		}
+		
+		buffer.put(goods);
+	}
+	
+	public Goods get (String name) {
+		AtomicBroadcast<Goods> buffer;
+		if ((buffer = goodsMap.putIfAbsent(name, new MonitorAtomicBroadcast<>())) == null) {
+			buffer = goodsMap.get(name);
+		}
+		
+		return buffer.get();
 	}
 	
 	public static void main(String[] args) {

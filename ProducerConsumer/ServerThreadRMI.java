@@ -8,9 +8,9 @@ import java.rmi.server.UnicastRemoteObject;
 public class ServerThreadRMI {
 
 	private int port;
-	private AtomicBroadcastRemote<String, Goods> remoteMap;
+	private AtomicBroadcastRemote remoteMap;
 	
-	public ServerThreadRMI(int port, AtomicBroadcastRemote<String, Goods> remoteMap) {
+	public ServerThreadRMI(int port, AtomicBroadcastRemote remoteMap) {
 		this.port = port;
 		this.remoteMap = remoteMap;
 	}
@@ -23,7 +23,7 @@ public class ServerThreadRMI {
 		
 		try {
 			Registry registry = LocateRegistry.createRegistry(port);
-			AtomicBroadcastRemote<String, Goods> stub = (AtomicBroadcastRemote<String, Goods>) UnicastRemoteObject.exportObject(remoteMap, 0);
+			AtomicBroadcastRemote stub = (AtomicBroadcastRemote) UnicastRemoteObject.exportObject(remoteMap, 0);
 			registry.rebind("/buffer", stub);
 			
 		} catch (RemoteException e) { }

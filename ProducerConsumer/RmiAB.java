@@ -6,7 +6,7 @@ import java.rmi.registry.Registry;
 
 public class RmiAB implements AB {
 	
-	AtomicBroadcastRemote<String, Goods> stub;
+	AtomicBroadcastRemote stub;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -17,7 +17,7 @@ public class RmiAB implements AB {
 		
 		try {
 			Registry reg = LocateRegistry.getRegistry(host, port);
-			stub = (AtomicBroadcastRemote<String, Goods>) reg.lookup("/buffer");
+			stub = (AtomicBroadcastRemote) reg.lookup("/buffer");
 		} catch (Exception e) { 
 			return false;
 		}

@@ -16,7 +16,7 @@ public class Producer {
 
 			Goods goods = new GoodsImpl(name);
 
-			int size = (int) (Math.random() * 32); 
+			int size = (int) (Math.random() * 5); 
 			for (int j = 0; j < size; j++) {
 				String data = "" + (Math.random() * 1234567) + "\n";
 				goods.printLine(data);
